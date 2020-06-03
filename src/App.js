@@ -15,7 +15,8 @@ class App extends React.Component{
     };
     this.getLocation = this.getLocation.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
-  }
+    this.getAddress = this.getAddress.bind(this);
+    }
   getLocation(){
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(this.getCoordinates);
@@ -30,8 +31,17 @@ class App extends React.Component{
       latitude:position.coords.latitude,
       longitude:position.coords.longitude
     })
+    this.getAddress();
   }
 
+  getAddress(){
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latitude},${this.state.longitude}&sensor=false&key=${key}`)
+    .then(response => response.json())
+    .then(data => this.setState({
+      userAddress:data.results[0].formatted_address
+    }))
+    .catch(error => alert(error))
+  }
    handleError(error) {
     switch(error.code) {
       case error.PERMISSION_DENIED:
