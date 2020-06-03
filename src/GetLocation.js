@@ -8,6 +8,7 @@ class GetLocation extends Component{
           console.log("Longitude is :", position.coords.longitude);
         });
       }
+      
     
     
     render(){
